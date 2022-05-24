@@ -6,7 +6,7 @@ import {useDropzone} from 'react-dropzone'
 
 const UserProfiles = () => {
   const [userProfiles, setUserPrifles] = useState([]);
-  
+
   /* updating objects and arrays in state : https://www.w3schools.com/react/react_usestate.asp */
   const fetchUserProfiles = () =>{
     axios.get("http://localhost:8080/api/v1/user-profile/").then(res => {
@@ -22,7 +22,11 @@ const UserProfiles = () => {
   return userProfiles.map((userProfile, index) => {
     return (
       <div key={index}>
-        {/*TODO: profile image*/}
+        {userProfile.userProfileId ? (
+        <img
+        src={`http://localhost:8080/api/v1/user-profile/${userProfile.userProfileId}/image/download`} alt=''
+        />
+        ) : null}
         <br/>
         <br/>
         <h1>
@@ -56,10 +60,11 @@ function Dropzone({userProfileId}) {
     }
     )
     .then(res =>{
-      console.log("image upload successfully",res);
+      alert("image upload successfully",res);
+      window.location.reload();
     })
     .catch(err=>{
-      console.log("operation failed",err);
+      alert("operation failed",err);
     });
   },[]);
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
