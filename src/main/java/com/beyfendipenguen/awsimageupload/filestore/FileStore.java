@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.IIOException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Optional;
@@ -44,7 +45,7 @@ public class FileStore {
         try {
             S3Object object = s3.getObject(path, key);
             return IOUtils.toByteArray(object.getObjectContent());
-        } catch (AmazonServiceException | IIOException e) {
+        } catch (AmazonServiceException | IOException e) {
             throw new IllegalStateException("Failed to download file to s3", e);
         }
     }
