@@ -62,7 +62,7 @@ public class UserProfileService {
                 user.getUserProfileId());
         return user.getUserProfileImageLink()
                 .map(key -> fileStore.download(path,key))
-                .orElse(new Byte[0]);
+                .orElse(new byte[0]);
     }
 
     private Map<String, String> extractMetadata(MultipartFile file) {
