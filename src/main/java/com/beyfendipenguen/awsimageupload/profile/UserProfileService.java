@@ -54,6 +54,17 @@ public class UserProfileService {
         }
     }
 
+    public byte[] downloadUserProfileImage(UUID userProfileId) {
+        // 1. The user exists in our database
+        UserProfile user = getUserProfileOrThrow(userProfileId);
+        String path = String.format("%s/%s",
+                BucketName.PROFILE_IMAGE.getBucketName(),
+                user.getUserProfileId());
+        return user.getUserProfileImageLink()
+                .map(key -> fileStore.download(path,key))
+                .orElse(new Byte[0]);
+    }
+
     private Map<String, String> extractMetadata(MultipartFile file) {
         Map<String, String> metadata = new HashMap<>();
         metadata.put("Content-Type", file.getContentType());
